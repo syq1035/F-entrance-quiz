@@ -86,7 +86,7 @@ class Home extends Component {
           <span className="text">学员列表</span>
           <div className="list">
             {
-              this.state.students && this.state.students.map((student, index) => (<div className="item" key={index}>{`${index + 1}.${student}`}</div>))
+              this.state.students && this.state.students.map((student, index) => (<div className="item" key={index}>{`${student.id}.${student.name}`}</div>))
             }
             {
               this.state.isAdd ?
