@@ -15,6 +15,11 @@ class Home extends Component {
 
   componentDidMount() {
     this.getAllStudents()
+    if(sessionStorage.getItem('studentGroups')) {
+      this.setState({
+        groups: JSON.parse(sessionStorage.getItem('studentGroups'))
+      })
+    }
   }
 
   getAllStudents = () => {
@@ -30,6 +35,7 @@ class Home extends Component {
       this.setState({
         groups: res.data
       })
+      sessionStorage.setItem('studentGroups', JSON.stringify(res.data))
     })
   }
 
@@ -48,7 +54,8 @@ class Home extends Component {
   enterAdd = (e) => {
     if (e.keyCode === 13) {
       this.setState({
-        isAdd: true
+        isAdd: true,
+        name: ''
       })
       axios.post('http://localhost:8080/student', { name: this.state.name }).then(() => {
         this.getAllStudents()
@@ -69,10 +76,10 @@ class Home extends Component {
             {
               this.state.groups && this.state.groups.map((group, index) => (
                 <div className="group" key={index}>
-                  <div className="group-num">{`${index + 1}组`}</div>
+                  <div className="group-num">{group.name}</div>
                   <div className="group-list">
                   {
-                    group.map((student, index) => (<div className="item" key={index}>{`${student.id}.${student.name}`}</div>))
+                    group.students.map((student, index) => (<div className="item" key={index}>{`${student.id}.${student.name}`}</div>))
                   }
                   </div>
                 </div>
